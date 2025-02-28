@@ -5,12 +5,14 @@ import { useState, useEffect } from "react";
 // Import type
 import type { Responsible } from "@/types/Responsible";
 // Import components
-import Table from "@/components/pages/home/table";
 import Loading from "@/components/shared/loading";
+import NotResult from "@/components/shared/notResult";
 import Pagination from "@/components/shared/pagination";
 import SearchInput from "@/components/pages/home/searchInput";
+import ResponsibleCards from "@/components/pages/home/responsibleCards";
 
 export default function Home() {
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -38,6 +40,9 @@ export default function Home() {
         // Set the responsibles data
         setDataTable(data);
         setResponsibles(data);
+
+        // Disable loading
+        setLoading(false);
       } catch (err) {
         // Set the error message
         setError(err instanceof Error ? err.message : "Error desconocido");
@@ -53,7 +58,7 @@ export default function Home() {
   };
 
   // Check if the data is loading
-  if (!error && dataTable.length === 0) {
+  if (!error && loading) {
     return <Loading />;
   }
 
@@ -64,16 +69,26 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-items-center min-h-screen p-2 pb-20 gap-4 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <SearchInput setDataTable={setDataTable} responsibles={responsibles} />
-
-      <Table responsibles={dataTable} currentPage={currentPage} />
-
-      <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        totalItems={dataTable.length}
-        onPageChange={handlePageChange}
+      <SearchInput
+        setDataTable={setDataTable}
+        responsibles={responsibles}
+        setTotalPages={setTotalPages}
       />
+
+      <ResponsibleCards responsibles={dataTable} currentPage={currentPage} />
+
+      {dataTable.length === 0 && (
+        <NotResult />
+      )}
+
+      {dataTable.length !== 0 && (
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          totalItems={dataTable.length}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 }

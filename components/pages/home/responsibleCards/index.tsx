@@ -1,7 +1,7 @@
 // Import type
 import type { Responsible } from "@/types/Responsible";
 
-export default function Table({
+export default function ResponsibleCards({
   responsibles,
   currentPage,
 }: {
