@@ -9,33 +9,47 @@ export default function Table({
   currentPage: number;
 }) {
   return (
-    <table className="w-full rounded-md border">
-      <thead>
-        <tr className="bg-indigo-600 text-white">
-          <th className="border p-2">Correo</th>
-          <th className="border p-2">ID Categoria</th>
-          <th className="border p-2">ID Responsable</th>
-          <th className="border p-2">ID Tipo</th>
-          <th className="border p-2">Puesto</th>
-          <th className="border p-2">Responsable</th>
-          <th className="border p-2">Telefono</th>
-        </tr>
-      </thead>
-      <tbody>
-        {responsibles
-          .slice((currentPage - 1) * 15, currentPage * 15)
-          .map((responsible, index) => (
-            <tr key={`responsible-${index}`} className="hover:bg-gray-100">
-              <td className="border p-2 text-center">{responsible.Correo}</td>
-              <td className="border p-2">{responsible.IDCategoria}</td>
-              <td className="border p-2">{responsible.IDResponsable}</td>
-              <td className="border p-2">{responsible.IDTipo}</td>
-              <td className="border p-2">{responsible.Puesto}</td>
-              <td className="border p-2">{responsible.Responsable}</td>
-              <td className="border p-2">{responsible.Telefono}</td>
-            </tr>
-          ))}
-      </tbody>
-    </table>
+    <div className="grid grid-cols-1 w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {responsibles
+        .slice((currentPage - 1) * 15, currentPage * 15)
+        .map((responsible, index) => (
+          <div
+            key={`responsible-${index}`}
+            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+          >
+            <div className="p-4">
+              <h3 className="text-lg font-semibold text-indigo-600 mb-2">
+                {responsible.Responsable}
+              </h3>
+              <div className="space-y-2">
+                <p className="text-gray-700">
+                  <span className="font-medium">Correo:</span>{" "}
+                  {responsible.Correo}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">ID Categoría:</span>{" "}
+                  {responsible.IDCategoria}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">ID Responsable:</span>{" "}
+                  {responsible.IDResponsable}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">ID Tipo:</span>{" "}
+                  {responsible.IDTipo}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">Puesto:</span>{" "}
+                  {responsible.Puesto}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">Teléfono:</span>{" "}
+                  {responsible.Telefono}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+    </div>
   );
 }
